@@ -1,0 +1,113 @@
+.main-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:100%;
+ background-image: url('../../Assets/bgblack.jpg');
+ background-repeat: no-repeat;
+ background-position: center;
+ background-size: contain;
+ position: relative;
+}
+video{
+    
+    width:100%;
+    height:100vh;
+    object-fit: cover;
+  }
+.form-container{
+    height:55%;
+    width:25%;
+    background: hsl(0, 0%, 5%);
+    border: 2px solid white;
+    padding:20px;
+    position: relative;
+    /* position: relative; */
+    /* border-radius: 10px; */
+   /* position: absolute;
+   border: 2px solid transparent;
+   background: linear-gradient(71deg, #080509, #1a171c, #080509); */
+   
+}
+.form-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    position: relative;
+  
+  }
+  
+  .form-set {
+    display: flex;
+    width: 100%;
+    gap: 1em;
+  }
+  .form-input {
+    width: 100%;
+    border: none;
+    color: grey;
+    border-bottom: 1px solid grey;
+    background-color: transparent;
+  }
+  .form-input:focus {
+    outline: none;
+  }
+  .form-input::placeholder {
+    font-style: normal;
+    font-family: "cern";
+    font-size: 14px;
+  }
+  .button-wrapper{
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    padding-top: 20px;
+    gap: 1em;
+  }
+  .form-button {
+    background-color: white;
+    width:70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 25px;
+    height: 50px;
+    font-size: 14px;
+  }
+  .S9gUrf-YoZ4jf{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+  }
+
+  .form-container:hover {
+    --expand: 1;
+  }
+  
+  .form-container:before,
+  .form-container:after {
+    content: '';
+    position: absolute;
+   
+    background: hsl(0, 0%, 5%);
+    border: 2px solid white;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+  
+  .form-container:after {
+    transform: translate(calc(var(--expand) * -2%), calc(var(--expand) * -2%));
+    transition: transform 0.2s;
+  }
+  
+  .form-wrapper{
+    transition: transform 0.2s;
+    transform: translate(calc(var(--expand) * -4%), calc(var(--expand) * -4%));
+  }
+
+  
