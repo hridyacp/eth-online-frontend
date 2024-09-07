@@ -34,7 +34,7 @@ return(
            
          <div class="card">
          <div className="input-wrapper"> 
-            <img src={logo} alt="logo" width="90px" height="10px"/>
+            <img src={logo} alt="logo" width="110px" height="40px"/>
             </div>
             <div className="input-wrapper"> 
           <div className="form-heading">
@@ -49,12 +49,13 @@ return(
           <div className="form-heading">
             <input className="form-input" placeholder="Password" defaultValue={password} type="text" onChange={(e)=>handleInput(e,'password')} />
           </div>
-          </div>
           <div className="button-wrapper">
                 <button className="form-button" onClick={onSubmit}>Submit</button>
                 {/* <GoogleLogin shape="pill"  onSuccess={responseMessage} onError={errorMessage} /> */}
                 <button className="form-button" onClick={()=>login()}><FcGoogle size={'1.5em'}/>Sign in with Google</button>
                 </div>
+          </div>
+        
         </div>
         
     </div>
