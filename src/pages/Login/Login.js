@@ -1,8 +1,9 @@
-import { Grid2 } from "@mui/material";
 import './login.css';
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import logo from "../../Assets/logo.png";
+import { FcGoogle } from 'react-icons/fc';
 const Login=()=>{
     const navigate=useNavigate();
     const [userName,setUserName]=useState('');
@@ -16,6 +17,9 @@ const Login=()=>{
     const errorMessage = (error) => {
         console.log(error);
     };
+    const login = useGoogleLogin({
+        onSuccess: tokenResponse => {console.log(tokenResponse);  navigate('/success')},
+      });
     const handleInput=(e,type)=>{
         if(type==='username')
 setUserName(e.target.value)
@@ -27,12 +31,12 @@ setUserName(e.target.value)
     }
 return(
         <div className="main-wrapper">
-            {/* <video autoPlay loop muted>
-          <source src = {vid} type = 'video/mp4' autoPlay loop/>
-          </video> */}
-            <div className="form-container">
-
-        <div className="form-wrapper">
+           
+         <div class="card">
+         <div className="input-wrapper"> 
+            <img src={logo} alt="logo" width="90px" height="10px"/>
+            </div>
+            <div className="input-wrapper"> 
           <div className="form-heading">
             <input
               className="form-input"
@@ -45,17 +49,14 @@ return(
           <div className="form-heading">
             <input className="form-input" placeholder="Password" defaultValue={password} type="text" onChange={(e)=>handleInput(e,'password')} />
           </div>
-          {/* <div className="form-heading form-set">
-            <input className="form-input" placeholder="Email" type="email" />
-            <input className="form-input" placeholder="Phone" type="num" />
-          </div> */}
+          </div>
           <div className="button-wrapper">
                 <button className="form-button" onClick={onSubmit}>Submit</button>
-                <GoogleLogin style={{backgroundColor:'blue'}} shape={'pill'} onSuccess={responseMessage} onError={errorMessage} />
+                {/* <GoogleLogin shape="pill"  onSuccess={responseMessage} onError={errorMessage} /> */}
+                <button className="form-button" onClick={()=>login()}><FcGoogle size={'1.5em'}/>Sign in with Google</button>
                 </div>
         </div>
         
-    </div>
     </div>
 )
 }
