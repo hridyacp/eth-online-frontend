@@ -6,21 +6,14 @@ import { FcGoogle } from "react-icons/fc";
 import { Dialog, DialogTitle } from "@mui/material";
 import axios from "axios";
 import { TiTickOutline } from "react-icons/ti";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 const Login = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState(false);
+  const [loginError, setLoginError] = useState(false);
   const [errors, setErrors] = useState({});
-  // const [file, setFile] = useState(null);
-  // const responseMessage = (response) => {
-  //     console.log(response);
-  //     if(response?.credential){
-  //         navigate('/success')
-  //     }
-  // };
-  // const errorMessage = (error) => {
-  //     console.log(error);
-  // };
+
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
       console.log(tokenResponse);
@@ -30,15 +23,14 @@ const Login = () => {
   const handleClose = () => {
     setAlert(false);
   };
+  const handleCloseLog = () => {
+    setLoginError(false);
+  };
   const handleInput = (e, type) => {
     if (type === "username") setUserName(e.target.value);
     else if (type === "password") setPassword(e.target.value);
-    // else if (type === "file") {
-    //   if (e.target.files) {
-    //     setFile(e.target.files[0]);
-    //   }
-    // }
   };
+
   const onSubmit = () => {
     if (userName !== "" && password !== "") {
       axios
@@ -47,12 +39,13 @@ const Login = () => {
           password: password,
         })
         .then(function (response) {
+          setAlert(true);
           console.log(response);
         })
         .catch(function (error) {
+          setLoginError(true);
           console.log(error);
         });
-      setAlert(true);
     } else {
       const newErrors = validateErrors();
       setErrors(newErrors);
@@ -84,7 +77,7 @@ const Login = () => {
               onChange={(e) => handleInput(e, "username")}
             />
             {errors.userName && (
-              <span className="error-message">{errors.userName}</span>
+              <div className="error-message">{errors.userName}</div>
             )}
           </div>
           <div className="form-heading">
@@ -97,7 +90,7 @@ const Login = () => {
               onChange={(e) => handleInput(e, "password")}
             />
             {errors.password && (
-              <span className="error-message">{errors.password}</span>
+              <div className="error-message">{errors.password}</div>
             )}
           </div>
           {/* <div className="form-heading">
@@ -126,6 +119,16 @@ const Login = () => {
           <DialogTitle className="dialogue">
             <TiTickOutline color="green" />
             Login successfull!
+          </DialogTitle>
+        </Dialog>
+      ) : (
+        ""
+      )}
+      {loginError ? (
+        <Dialog onClose={handleCloseLog} open={loginError}>
+          <DialogTitle className="dialogue">
+            <IoIosCloseCircleOutline color="red" />
+            Login Unsuccessfull!
           </DialogTitle>
         </Dialog>
       ) : (

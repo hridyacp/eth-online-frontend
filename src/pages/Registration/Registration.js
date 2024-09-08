@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import logo from "../../Assets/logo.png";
 import { FcGoogle } from "react-icons/fc";
+import axios from "axios";
 const Registration = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -13,11 +14,7 @@ const Registration = () => {
     password: "",
     confirmPassword: "",
   });
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+
   const [errors, setErrors] = useState({});
 
   const handleInput = (e, type) => {
@@ -35,17 +32,29 @@ const Registration = () => {
     const newErrors = validateForm(formData);
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
-      navigate("Login");
+      axios
+        .post("/user", {
+          username: formData.name,
+          email: formData.email,
+          password: formData.password,
+        })
+        .then(function (response) {
+          console.log(response);
+          navigate("/login");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
-    console.log(name, password, email, phone, confirmPassword, "userpass");
+    console.log(formData, "userpass");
   };
   const validateForm = (data) => {
     const errors = {};
 
     if (!data.name.trim()) {
       errors.name = "Name is required";
-    } else if (data.name.length < 4) {
-      errors.name = "Username must be at least 4 characters long";
+    } else if (data.name.length > 8) {
+      errors.name = "Username must not be greater than 8 characters long";
     }
 
     if (!data.email.trim()) {
@@ -56,10 +65,10 @@ const Registration = () => {
 
     if (!data.password) {
       errors.password = "Password is required";
-    } else if (data.password.length < 8) {
-      errors.password = "Password must be at least 8 characters long";
+    } else if (data.password.length > 16) {
+      errors.password = "Password must not be greater than 16 characters long";
     }
-    if (!data.confirmPasswordpassword) {
+    if (!data.confirmPassword) {
       errors.confirmPassword = "Please type password again";
     }
 
@@ -80,27 +89,27 @@ const Registration = () => {
           <div className="form-heading">
             <input
               className="form-input"
-              placeholder="Full Name"
+              placeholder="User Name*"
               defaultValue={formData.name}
               type="text"
               required
               onChange={(e) => handleInput(e, "name")}
             />
             {errors.name && (
-              <span className="error-message">{errors.name}</span>
+              <div className="error-message">{errors.name}</div>
             )}
           </div>
           <div className="form-heading">
             <input
               className="form-input"
-              placeholder="Email"
+              placeholder="Email*"
               defaultValue={formData.email}
               type="email"
               required
               onChange={(e) => handleInput(e, "email")}
             />
             {errors.email && (
-              <span className="error-message">{errors.email}</span>
+              <div className="error-message">{errors.email}</div>
             )}
           </div>
           <div className="form-heading">
@@ -113,39 +122,39 @@ const Registration = () => {
               onChange={(e) => handleInput(e, "phone")}
             />
             {errors.phone && (
-              <span className="error-message">{errors.phone}</span>
+              <div className="error-message">{errors.phone}</div>
             )}
           </div>
           <div className="form-heading">
             <input
               className="form-input"
-              placeholder="Password"
+              placeholder="Password*"
               defaultValue={formData.password}
               type="password"
               required
               onChange={(e) => handleInput(e, "password")}
             />
             {errors.password && (
-              <span className="error-message">{errors.password}</span>
+              <div className="error-message">{errors.password}</div>
             )}
           </div>
           <div className="form-heading">
             <input
               className="form-input"
-              placeholder="Confirm Password"
+              placeholder="Confirm Password*"
               defaultValue={formData.confirmPassword}
               type="password"
               required
               onChange={(e) => handleInput(e, "confirmPassword")}
             />
             {errors.confirmPassword && (
-              <span className="error-message">{errors.confirmPassword}</span>
+              <div className="error-message">{errors.confirmPassword}</div>
             )}
           </div>
 
           <div className="button-wrapper">
             <button className="form-button" onClick={onSubmit}>
-              Submit
+              Register
             </button>
           </div>
         </div>
