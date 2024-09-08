@@ -64,7 +64,7 @@ const Login = () => {
     <div className="main-wrapper">
       <div className="card">
         <div className="input-wrapper">
-          <img src={logo} alt="logo" width="110px" height="40px" />
+          <img src={logo} alt="logo" width="150px" height="50px" />
         </div>
         <div className="input-wrapper">
           <div className="form-heading">
