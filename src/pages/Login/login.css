@@ -145,3 +145,8 @@ input[type="file"]::placeholder {
   padding: 10px 20px;
   font-size: 16px;
 }
+.dialogue{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

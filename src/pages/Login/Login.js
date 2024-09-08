@@ -1,15 +1,16 @@
 import "./login.css";
 import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import logo from "../../Assets/logo.png";
 import { FcGoogle } from "react-icons/fc";
 import { Dialog, DialogTitle } from "@mui/material";
+import axios from "axios";
+import { TiTickOutline } from "react-icons/ti";
 const Login = () => {
-  const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState(false);
+  const [errors, setErrors] = useState({});
   // const [file, setFile] = useState(null);
   // const responseMessage = (response) => {
   //     console.log(response);
@@ -26,9 +27,9 @@ const Login = () => {
       setAlert(true);
     },
   });
-  const handleClose=()=>{
+  const handleClose = () => {
     setAlert(false);
-  }
+  };
   const handleInput = (e, type) => {
     if (type === "username") setUserName(e.target.value);
     else if (type === "password") setPassword(e.target.value);
@@ -39,11 +40,36 @@ const Login = () => {
     // }
   };
   const onSubmit = () => {
-    console.log(userName, password, "userpass");
+    if (userName !== "" && password !== "") {
+      axios
+        .post("/user", {
+          username: userName,
+          password: password,
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      setAlert(true);
+    } else {
+      const newErrors = validateErrors();
+      setErrors(newErrors);
+    }
+  };
+  const validateErrors = () => {
+    const errors = {};
+    if (userName === "") {
+      errors.userName = "User name is required";
+    } else if (password === "") {
+      errors.password = "Please type password";
+    }
+    return errors;
   };
   return (
     <div className="main-wrapper">
-      <div class="card">
+      <div className="card">
         <div className="input-wrapper">
           <img src={logo} alt="logo" width="110px" height="40px" />
         </div>
@@ -57,6 +83,9 @@ const Login = () => {
               required
               onChange={(e) => handleInput(e, "username")}
             />
+            {errors.userName && (
+              <span className="error-message">{errors.userName}</span>
+            )}
           </div>
           <div className="form-heading">
             <input
@@ -67,6 +96,9 @@ const Login = () => {
               required
               onChange={(e) => handleInput(e, "password")}
             />
+            {errors.password && (
+              <span className="error-message">{errors.password}</span>
+            )}
           </div>
           {/* <div className="form-heading">
             <input
@@ -89,11 +121,16 @@ const Login = () => {
           </div>
         </div>
       </div>
-      {alert?
-      <Dialog onClose={handleClose} open={alert}>
-      <DialogTitle>Login successfull!!</DialogTitle>
-   
-    </Dialog>:""}
+      {alert ? (
+        <Dialog onClose={handleClose} open={alert}>
+          <DialogTitle className="dialogue">
+            <TiTickOutline color="green" />
+            Login successfull!
+          </DialogTitle>
+        </Dialog>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
