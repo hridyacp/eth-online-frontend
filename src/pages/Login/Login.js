@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import logo from "../../Assets/logo.png";
 import { FcGoogle } from "react-icons/fc";
+import { Dialog, DialogTitle } from "@mui/material";
 const Login = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [file, setFile] = useState(null);
+  const [alert, setAlert] = useState(false);
+  // const [file, setFile] = useState(null);
   // const responseMessage = (response) => {
   //     console.log(response);
   //     if(response?.credential){
@@ -21,17 +23,20 @@ const Login = () => {
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
       console.log(tokenResponse);
-      navigate("/success");
+      setAlert(true);
     },
   });
+  const handleClose=()=>{
+    setAlert(false);
+  }
   const handleInput = (e, type) => {
     if (type === "username") setUserName(e.target.value);
     else if (type === "password") setPassword(e.target.value);
-    else if (type === "file") {
-      if (e.target.files) {
-        setFile(e.target.files[0]);
-      }
-    }
+    // else if (type === "file") {
+    //   if (e.target.files) {
+    //     setFile(e.target.files[0]);
+    //   }
+    // }
   };
   const onSubmit = () => {
     console.log(userName, password, "userpass");
@@ -49,6 +54,7 @@ const Login = () => {
               placeholder="User Name"
               defaultValue={userName}
               type="text"
+              required
               onChange={(e) => handleInput(e, "username")}
             />
           </div>
@@ -57,11 +63,12 @@ const Login = () => {
               className="form-input"
               placeholder="Password"
               defaultValue={password}
-              type="text"
+              type="password"
+              required
               onChange={(e) => handleInput(e, "password")}
             />
           </div>
-          <div className="form-heading">
+          {/* <div className="form-heading">
             <input
               className="form-input"
               placeholder="Attach File"
@@ -69,7 +76,7 @@ const Login = () => {
               type="file"
               onChange={(e) => handleInput(e, "file")}
             />
-          </div>
+          </div> */}
           <div className="button-wrapper">
             <button className="form-button" onClick={onSubmit}>
               Submit
@@ -82,6 +89,11 @@ const Login = () => {
           </div>
         </div>
       </div>
+      {alert?
+      <Dialog onClose={handleClose} open={alert}>
+      <DialogTitle>Login successfull!!</DialogTitle>
+   
+    </Dialog>:""}
     </div>
   );
 };
